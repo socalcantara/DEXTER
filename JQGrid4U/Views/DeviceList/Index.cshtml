@@ -1,0 +1,174 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<head>
+    <title>Device List Per Conveyor</title>
+
+    <script type="text/javascript" src="~/bootstrap_dpicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="~/bootstrap_dpicker/js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+
+
+    <script src="~/dist/Chart.bundle.js"></script>
+    <script src="~/dist/Chart.min.js"></script>
+    @*<script src="~/utils.js"></script>*@
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+
+    <style type="text/css">
+        #chart-container {
+            width: 1140px;
+            height: auto;
+        }
+    </style>
+
+
+
+
+
+</head>
+
+<body>
+
+    <div id="str_conveyorname" class='@(Request.QueryString["conveyorname"] != null ? Request.QueryString["conveyorname"] : null)'> </div>
+    <div id="str_conveyorid" class='@(Request.QueryString["conveyorid"] != null ? Request.QueryString["conveyorid"] : null)'> </div>
+
+
+
+    <div style="position:absolute;top:40px;">
+
+        <h3><label id="lbldevice"></label></h3>
+        <h5><label>Conveyor Status : &nbsp;</label><label id="lblsitename"></label></h5>       
+        <div>
+            <input type="button" id="btn001" onclick="" class="btn btn-default" value="Device #01" />
+            <input type="button" id="btn002" onclick="" class="btn btn-default" value="Device #02" />
+            <input type="button" id="btn003" onclick="" class="btn btn-default" value="Device #03" />
+            <input type="button" id="btn004" onclick="" class="btn btn-default" value="Device #04" />
+            <input type="button" id="btn005" onclick="" class="btn btn-default" value="Device #05" />
+            <input type="button" id="btn006" onclick="" class="btn btn-default" value="Device #06" />
+            <input type="button" id="btn007" onclick="" class="btn btn-default" value="Device #07" />
+            <input type="button" id="btn008" onclick="" class="btn btn-default" value="Device #08" />
+            <input type="button" id="btn009" onclick="" class="btn btn-default" value="Device #09" />
+            <input type="button" id="btn010" onclick="" class="btn btn-default" value="Device #10" />
+          </div>
+        </br>
+        <div>
+            <input type="button" id="btn011" onclick="" class="btn btn-default" value="Device #11" />
+            <input type="button" id="btn012" onclick="" class="btn btn-default" value="Device #12" />
+            <input type="button" id="btn013" onclick="" class="btn btn-default" value="Device #13" />
+            <input type="button" id="btn014" onclick="" class="btn btn-default" value="Device #14" />
+            <input type="button" id="btn015" onclick="" class="btn btn-default" value="Device #15" />
+            <input type="button" id="btn016" onclick="" class="btn btn-default" value="Device #16" />
+            <input type="button" id="btn017" onclick="" class="btn btn-default" value="Device #17" />
+            <input type="button" id="btn018" onclick="" class="btn btn-default" value="Device #18" />
+            <input type="button" id="btn019" onclick="" class="btn btn-default" value="Device #19" />
+            <input type="button" id="btn020" onclick="" class="btn btn-default" value="Device #20" />
+            <input id="txtfilter" style="visibility:hidden" type="text" class="btn btn-default" value="" />
+            </div>
+        </br>
+        <div>
+            <input type="button" id="btn021" onclick="" class="btn btn-default" value="Device #21" />
+            <input type="button" id="btn022" onclick="" class="btn btn-default" value="Device #22" />
+            <input type="button" id="btn023" onclick="" class="btn btn-default" value="Device #23" />
+            <input type="button" id="btn024" onclick="" class="btn btn-default" value="Device #24" />
+            <input type="button" id="btn025" onclick="" class="btn btn-default" value="Device #25" />
+            <input type="button" id="btn026" onclick="" class="btn btn-default" value="Device #26" />
+            <input type="button" id="btn027" onclick="" class="btn btn-default" value="Device #27" />
+            <input type="button" id="btn028" onclick="" class="btn btn-default" value="Device #28" />
+            <input type="button" id="btn029" onclick="" class="btn btn-default" value="Device #29" />
+            <input type="button" id="btn030" onclick="" class="btn btn-default" value="Device #30" />
+            <input id="txtfilter" style="visibility:hidden" type="text" class="btn btn-default" value="" />
+        </div>
+        </br>
+
+        <div>
+            <input type="button" id="btn031" onclick="" class="btn btn-default" value="Device #31" />
+            <input type="button" id="btn032" onclick="" class="btn btn-default" value="Device #32" />
+            <input type="button" id="btn033" onclick="" class="btn btn-default" value="Device #33" />
+            <input type="button" id="btn034" onclick="" class="btn btn-default" value="Device #34" />
+            <input type="button" id="btn035" onclick="" class="btn btn-default" value="Device #35" />
+            <input type="button" id="btn036" onclick="" class="btn btn-default" value="Device #36" />
+            <input type="button" id="btn037" onclick="" class="btn btn-default" value="Device #37" />
+            <input type="button" id="btn038" onclick="" class="btn btn-default" value="Device #38" />
+            <input type="button" id="btn039" onclick="" class="btn btn-default" value="Device #39" />
+            <input type="button" id="btn040" onclick="" class="btn btn-default" value="Device #40" />
+            <input id="txtfilter" style="visibility:hidden" type="text" class="btn btn-default" value="" />
+        </div>
+        </br>
+
+        <div>
+            <input type="button" id="btn041" onclick="" class="btn btn-default" value="Device #41" />
+            <input type="button" id="btn042" onclick="" class="btn btn-default" value="Device #42" />
+            <input type="button" id="btn043" onclick="" class="btn btn-default" value="Device #43" />
+            <input type="button" id="btn044" onclick="" class="btn btn-default" value="Device #44" />
+            <input type="button" id="btn045" onclick="" class="btn btn-default" value="Device #45" />
+            <input type="button" id="btn046" onclick="" class="btn btn-default" value="Device #46" />
+            <input type="button" id="btn047" onclick="" class="btn btn-default" value="Device #47" />
+            <input type="button" id="btn048" onclick="" class="btn btn-default" value="Device #48" />
+            <input type="button" id="btn049" onclick="" class="btn btn-default" value="Device #49" />
+            <input type="button" id="btn050" onclick="" class="btn btn-default" value="Device #50" />
+            <input id="txtfilter" style="visibility:hidden" type="text" class="btn btn-default" value="" />
+        </div>
+        </br>
+        <div>
+            <input type="button" id="btn051" onclick="" class="btn btn-default" value="Device #51" />
+            <input type="button" id="btn052" onclick="" class="btn btn-default" value="Device #52" />
+            <input type="button" id="btn053" onclick="" class="btn btn-default" value="Device #53" />
+            <input type="button" id="btn054" onclick="" class="btn btn-default" value="Device #54" />
+            <input type="button" id="btn055" onclick="" class="btn btn-default" value="Device #55" />
+            <input type="button" id="btn056" onclick="" class="btn btn-default" value="Device #56" />
+            <input type="button" id="btn057" onclick="" class="btn btn-default" value="Device #57" />
+            <input type="button" id="btn048" onclick="" class="btn btn-default" value="Device #58" />
+            <input type="button" id="btn049" onclick="" class="btn btn-default" value="Device #59" />
+            <input type="button" id="btn050" onclick="" class="btn btn-default" value="Device #60" />
+            <input id="txtfilter" style="visibility:hidden" type="text" class="btn btn-default" value="" />
+        </div>
+
+      
+    </div>
+
+    <div id="chart-container" style="z-index:1000;position:absolute;top:230px">
+        <canvas id="mycanvas"></canvas>
+    </div>
+
+</body>
+
+<script>
+
+    var site = $('#str_conveyorname').attr('class');
+    var vsiteID = $('#str_conveyorid').attr('class');
+    $("#lblsitename").text(site);
+
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "DeviceList/selectdevice?conveyorId=" + vsiteID,
+            type: "GET",
+            success: function (data) {
+                console.log(data);
+
+                var userid = [];
+                var googleplus_follower = [];
+
+                for (var i in data) {
+                    //userid.push(":" + data[i].deviceID);
+                   // googleplus_follower.push(data[i].zval);
+                    alert(data[i].deviceID);
+                }
+                
+            },
+           
+        });
+    });
+
+
+
+
+</script>
+

@@ -1,0 +1,321 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<head>
+    <title>Line Chart</title>
+
+    <script type="text/javascript" src="~/bootstrap_dpicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="~/bootstrap_dpicker/js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+
+
+    <script src="~/dist/Chart.bundle.js"></script>
+    <script src="~/dist/Chart.min.js"></script>
+    @*<script src="~/utils.js"></script>*@
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+
+    <style type="text/css">
+        #chart-container {
+            width: 1140px;
+            height: auto;
+        }
+    </style>
+
+
+
+
+
+</head>
+
+<body>
+
+    <div id="str_conveyorname" class='@(Request.QueryString["conveyorname"] != null ? Request.QueryString["conveyorname"] : null)'> </div>
+    <div id="str_conveyorid" class='@(Request.QueryString["conveyorid"] != null ? Request.QueryString["conveyorid"] : null)'> </div>
+
+
+
+    <div style="position:absolute;top:40px;">
+
+        <h3><label id="lbldevice"></label></h3>
+        <h5><label>Conveyor Status : &nbsp;</label><label id="lblsitename"></label></h5>
+        <h5><label>Current Date  : &nbsp;</label><label id="lblDate"></label></h5>
+        <div ><input type="button"   onclick="document.getElementById('txtfilter').style.visibility = 'visible';
+    document.getElementById('txtfilter').focus();
+    document.getElementById('btnredraw').style.visibility = 'visible'" 
+                     class="btn btn-default" value="Filter" />
+        
+        <input id="txtfilter" style="visibility:hidden" type="text"  class="btn btn-default" value="" />        
+         <input type="button" id="btnredraw" style="visibility:hidden" onclick="reDraw();" class="btn btn-default" value="Redraw" />
+           
+
+        </div>
+    </div>
+
+
+
+    <div id="chart-container" style="z-index:1000;position:absolute;top:230px">
+        <canvas id="mycanvas"></canvas>
+    </div>
+
+    <!-- javascript -->
+
+
+
+
+</body>
+
+<script>
+
+    function goBack() {
+        window.history.back();
+    }
+
+
+       var site = $('#str_conveyorname').attr('class');
+       var vsiteID = $('#str_conveyorid').attr('class');
+       $("#lblsitename").text(site);
+
+
+    var FromDate = new Date();
+    var ToDate = new Date();
+    FromDate.setDate(FromDate.getDate() - 6);
+    FromDate = new Date('08/31/2017 12:00 AM');
+
+    vto = new Date();
+    var vTo1 = new Date(vto);
+
+    var vyr = vTo1.getFullYear();
+    var vmo = vTo1.getMonth() + 1;
+    var vday = vTo1.getDate();
+    var vhr = vTo1.getHours();
+    var vmin = vTo1.getMinutes();
+    var str = vmo + '/' + vday + '/' + vyr ;
+    var ToDate = str;
+    $("#lblDate").text(str);
+
+
+
+  //  alert(str1 + 'XX' + str);
+ //   alert(vsiteID);
+
+    $(document).ready(function () {
+        $.ajax({           
+            url: "Conveygraph/selectconveyor?conveyorId=" + vsiteID  ,
+            type: "GET",
+            success: function (data) {
+                console.log(data);
+
+                var userid = [];
+              //  var facebook_follower = [];
+               // var twitter_follower = [];
+                var googleplus_follower = [];
+
+                for (var i in data) {
+                    userid.push(":" + data[i].deviceID);
+                  //  facebook_follower.push(data[i].xval);
+                //    twitter_follower.push(data[i].yval);
+                    googleplus_follower.push(data[i].zval);
+                    //$("#lblvalueID").text(data[i].latestvalue);
+                    //$("#lblDateRange").text(data[i].daterange);
+                }
+
+
+                var ctx = $("#mycanvas");
+                
+
+
+
+                var LineGraph = new Chart(ctx, {
+                    type: 'bar',
+                    data: chartdata
+                });
+
+
+
+                var bar_ctx = document.getElementById('mycanvas').getContext('2d');
+
+                var purple_orange_gradient = bar_ctx.createLinearGradient(0, 0, 0, 600);
+                purple_orange_gradient.addColorStop(0, 'rgba(93,173,86,1)');
+                purple_orange_gradient.addColorStop(1, 'rgba(1,94,2,1)');
+
+              var grad_blue = bar_ctx.createLinearGradient(0, 0, 0, 600);
+               grad_blue.addColorStop(0, 'rgba(56,105,161,1)');
+                grad_blue.addColorStop(1, 'rgba(8,37,85,1)');
+
+
+
+                var LineGraph1 = new Chart(bar_ctx, {
+                    type: 'bar',
+                    data: chartdata
+                });
+
+                
+                            
+
+                var chartdata = {
+                    labels: userid,
+                    datasets: [
+                        //{
+                        //    label: "X Value",
+                        //    fill: false,
+                        //    lineTension: 0.001,
+                        //    backgroundColor:"rgba(255, 160, 28, 1)",
+                        //    borderColor: "rgba(255, 160, 28, 1)",                          
+                        //    pointHoverBackgroundColor: "rgba(59, 89, 152, 1)",
+                        //    pointHoverBorderColor: "rgba(59, 89, 152, 1)",
+                        //    data: facebook_follower
+                        //},
+                        //{
+                        //    label: "Y Value",
+                        //    fill: false,
+                        //    lineTension: 0.001,
+                        //    backgroundColor: 'rgba(59,104,161,1)', //"rgba(56,105,161,1)",
+                        //    borderColor: 'rgba(59,104,161,1)', //"rgba(56,105,161,1)",
+                        //    pointHoverBackgroundColor: "rgba(59, 89, 152, 1)",
+                        //    pointHoverBorderColor: "rgba(59, 89, 152, 1)",
+                        //    data: twitter_follower
+                        //},
+                        {
+                            label: "Temperature",
+                            fill: false,
+                            lineTension: 0.001,
+                            backgroundColor: purple_orange_gradient, //"rgba(88, 174, 80, 1)",
+                            borderColor: "green", //"rgba(88, 174, 80, 1)",                          
+                            pointHoverBackgroundColor: "rgba(59, 89, 152, 1)",
+                            pointHoverBorderColor: "rgba(59, 89, 152, 1)",
+                            data: googleplus_follower
+                        }
+                        
+
+
+                    ]
+                };
+
+
+
+
+
+                var LineGraph1 = new Chart(ctx, {
+                    type: 'bar',
+                    data: chartdata
+                });          
+               
+
+                
+
+
+
+                // options: { legend: { display: false } }
+
+            },
+            error: function (data) {
+
+            }
+        });
+    });
+
+
+
+    function reDraw() {
+        
+        var loc = "conveyGraphFilter?conveyorid=" + vsiteID + " &device=" + document.getElementById("txtfilter").value;
+      //  alert(loc);
+        window.location.href = loc;
+          
+
+    }
+
+
+
+    function showDate() {
+        var x = document.getElementById('lblfrom');
+        x.style.display = 'block';
+        var y = document.getElementById('lblto');
+        y.style.display = 'block';
+
+        var a = document.getElementById('div1');
+        a.style.visibility = 'visible';
+
+        var b = document.getElementById('div2');
+        b.style.visibility = 'visible';
+
+        var b = document.getElementById('divbtn1');
+        b.style.visibility = 'visible';
+
+
+    }
+
+
+
+    function getDateToday() {
+
+        var deviceID = $('#str_site').attr('class');
+        var vSiteName = $('#str_sitename').attr('class');
+        var vTo = new Date();
+
+        var vyr = vTo.getFullYear();
+        var vmo = vTo.getMonth() + 1;
+        var vday = vTo.getDate();
+        var vhr = vTo.getHours();
+        var vmin = vTo.getMinutes();
+
+        var str = vmo + '/' + vday + '/' + vyr + ' ' + '11:59 PM';
+        //var vFr = vmo + '/' + vday + '/' + vyr + ' ' + '11:59 AM';
+
+        var vFromDate = new Date(str);
+        var someDate = new Date(str);
+        var numberOfDaysToAdd = 0;
+
+        someDate.setDate(vTo.getDate() + numberOfDaysToAdd);
+
+        vFromDate.setDate(vTo.getDate() + numberOfDaysToAdd);
+
+        var vyrF = vFromDate.getFullYear();
+        var vmoF = vFromDate.getMonth() + 1;
+        var vdayF = vFromDate.getDate();
+        var vhrF = "00";
+        var vminF = "00";
+        var str1 = vmoF + '/' + vdayF + '/' + vyrF + ' ' + vhrF + ':' + vminF + ' AM';
+
+        var loc = "graphDate?deviceid=" + $('#str_site').attr('class') + "&fromDate=" + str1 + " &toDate=" + str + " &status=" + statID + " &siteName=" + vSiteName;
+
+
+
+        window.location.href = loc;
+        //GraphDataParam / selectdeviceBparamJson ? deviceID = P3 & fromdate=08 / 01 / 2017 & todate=09 / 05 / 2017
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    $('.form_date').datetimepicker({
+        //language: 'en',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
+
+
+
+</script>
+
